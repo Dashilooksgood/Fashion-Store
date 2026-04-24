@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Produk - Fashion Store</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    header {
+      background: #222;
+      color: white;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+
+    header a:hover {
+      color: #ff6b6b;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .breadcrumb {
+      color: #666;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .breadcrumb a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .product-detail {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      padding: 40px;
+    }
+
+    .product-image-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .main-image {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: #f0f0f0;
+    }
+
+    .thumbnail-images {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .thumbnail {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    .thumbnail:hover {
+      border-color: #667eea;
+    }
+
+    .product-info-section h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .product-category {
+      color: #999;
+      font-size: 14px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .rating-stars {
+      color: #ff9800;
+      font-size: 16px;
+    }
+
+    .rating-text {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .price-section {
+      margin-bottom: 30px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .original-price {
+      font-size: 18px;
+      color: #999;
+      text-decoration: line-through;
+      margin-right: 15px;
+    }
+
+    .current-price {
+      font-size: 36px;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .discount-badge {
+      display: inline-block;
+      background: #ff6b6b;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .description {
+      margin-bottom: 30px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .size-section {
+      margin-bottom: 30px;
+    }
+
+    .size-section h3 {
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .size-option {
+      padding: 10px 15px;
+      border: 2px solid #ddd;
+      background: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .size-option:hover {
+      border-color: #667eea;
+    }
+
+    .size-option.selected {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .quantity-section {
+      margin-bottom: 30px;
+    }
+
+    .quantity-section h3 {
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+    }
+
+    .quantity-btn {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 18px;
+      transition: all 0.3s;
+    }
+
+    .quantity-btn:hover {
+      background: #f0f0f0;
+    }
+
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-add-cart {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-add-cart:hover {
+      background: #764ba2;
+    }
+
+    .btn-wishlist {
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+
+    .btn-wishlist:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .product-specs {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .specs-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .spec-item {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+
+    .spec-label {
+      color: #999;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .spec-value {
+      color: #222;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .reviews-section {
+      background: #f9f9f9;
+      padding: 30px;
+      border-radius: 8px;
+      margin-top: 40px;
+    }
+
+    .reviews-section h2 {
+      margin-bottom: 20px;
+    }
+
+    .review-item {
+      background: white;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border-left: 4px solid #667eea;
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .review-author {
+      font-weight: bold;
+    }
+
+    .review-date {
+      color: #999;
+      font-size: 12px;
+    }
+
+    .review-rating {
+      color: #ff9800;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .review-text {
+      color: #555;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      background: #222;
+      color: white;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .product-detail {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .product-info-section h1 {
+        font-size: 24px;
+      }
+
+      .current-price {
+        font-size: 28px;
+      }
+
+      .main-image {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Fashion Store</h1>
+      <nav>
+        <a href="index.html">Beranda</a>
+        <a href="products.html">Katalog</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">Beranda</a> /
+      <a href="products.html">Katalog</a> /
+      <span id="breadcrumbProduct">Produk</span>
+    </div>
+
+    <div class="product-detail">
+      <div class="product-image-section">
+        <img src="" id="mainImage" alt="Product" class="main-image">
+        <div class="thumbnail-images" id="thumbnails">
+          <!-- Thumbnails akan dimuat di sini -->
+        </div>
+      </div>
+
+      <div class="product-info-section">
+        <div class="product-category" id="category"></div>
+        <h1 id="productName"></h1>
+        
+        <div class="rating">
+          <div class="rating-stars" id="ratingStars">★ 4.5</div>
+          <div class="rating-text">(<span id="reviewCount">25</span> reviews)</div>
+        </div>
+
+        <div class="price-section">
+          <span class="original-price" id="originalPrice">Rp 300.000</span>
+          <span class="current-price" id="currentPrice">Rp 250.000</span>
+          <span class="discount-badge" id="discountBadge">-17%</span>
+        </div>
+
+        <div class="description" id="description"></div>
+
+        <div class="size-section">
+          <h3>Ukuran</h3>
+          <div class="size-options">
+            <button class="size-option" onclick="selectSize(this)">XS</button>
+            <button class="size-option selected" onclick="selectSize(this)">S</button>
+            <button class="size-option" onclick="selectSize(this)">M</button>
+            <button class="size-option" onclick="selectSize(this)">L</button>
+            <button class="size-option" onclick="selectSize(this)">XL</button>
+            <button class="size-option" onclick="selectSize(this)">XXL</button>
+          </div>
+        </div>
+
+        <div class="quantity-section">
+          <h3>Jumlah</h3>
+          <div class="quantity-control">
+            <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+            <input type="number" id="quantity" class="quantity-input" value="1" min="1">
+            <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-add-cart" onclick="addToCart()">Tambah ke Keranjang</button>
+          <button class="btn btn-wishlist" onclick="addToWishlist()">❤ Wishlist</button>
+        </div>
+
+        <div class="product-specs">
+          <div class="specs-list">
+            <div class="spec-item">
+              <div class="spec-label">Material</div>
+              <div class="spec-value" id="material">Cotton</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Berat</div>
+              <div class="spec-value" id="weight">300gr</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Ketersediaan</div>
+              <div class="spec-value" id="availability">In Stock</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-label">Garansi</div>
+              <div class="spec-value" id="warranty">1 Tahun</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-section">
+      <h2>Ulasan Pelanggan</h2>
+      <div id="reviewsList">
+        <!-- Reviews akan dimuat di sini -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Fashion Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Retro Routine",
+        category: "Oneset",
+        price: 580000,
+        originalPrice: 800000,
+        image: "gambar1.jpg",
+        rating: 4.5,
+        description: "Ini adalah tampilan smart casual with a twist. Jaket bomber coklat tua yang longgar memberikan kesan santai, tapi langsung diseimbangkan dengan kemeja putih dan dasi bergaris coklat yang rapi. Sarung tangan kulit di tangan menambah sentuhan old-school cool. Celana bahan longgar warna coklat dan sepatu boots tebal membuat keseluruhan tampilan terasa santai, effortless, dan tidak terlalu formal.",
+        material: "100% Cotton",
+        weight: "250gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "Ahmad Rizki", rating: 5, text: "Bagus sekali! Kualitasnya memuaskan dan pengiriman cepat." },
+          { author: "Siti Nurhaliza", rating: 4, text: "Cukup bagus, tapi agak kecil ukurannya." },
+          { author: "Budi Santoso", rating: 5, text: "Puas dengan pembelian ini, akan beli lagi." }
+        ]
+      },
+      {
+        id: 2,
+        name: "Coffee Rhythm",
+        category: "Oneset",
+        price: 485000,
+        originalPrice: 550000,
+        image: "gambar2.jpg",
+        rating: 4.3,
+        description: "Definisi dari sleek minimalism. Tampilan ini sangat bersih, hanya mengandalkan siluet kemeja hitam oversized kancing penuh dan celana lurus longgar warna khaki abu-abu. Tidak ada motif atau aksesori rumit, hanya fokus pada permainan proporsi pakaian yang longgar dan modern. Sepatu hitam sol tebal memberikan base yang kuat untuk tampilan yang simpel ini.",
+        material: "Cotton Blend",
+        weight: "260gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "Diana Putri", rating: 4, text: "Nyaman dipakai sehari-hari" },
+          { author: "Eka Suryanto", rating: 4, text: "Kualitas bagus, harga sesuai" }
+        ]
+      },
+      {
+        id: 3,
+        name: "Ash Layered Ease",
+        category: "Oneset",
+        price: 750000,
+        originalPrice: 850000,
+        image: "gambar3.jpg",
+        rating: 4.7,
+        description: "Gaya streetwear yang klasik dan serbaguna. Jaket denim oversized dengan efek belel (faded denim) dipadukan dengan hoodie coklat bergambar. Perpaduan ini memberikan kesan tangguh, santai, dan berlapis-lapis (layering). Celana panjang hitam longgar dan sepatu boots hitam tebal menyempurnakan tampilan yang siap untuk jalan-jalan sore ini.",
+        material: "Polyester",
+        weight: "350gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "Nadia Astri", rating: 5, text: "Sangat cantik dan berkualitas!" },
+          { author: "Rini Wijaya", rating: 5, text: "Cocok untuk berbagai acara" }
+        ]
+      },
+      {
+        id: 4,
+        name: "Café Corner Fit",
+        category: "Oneset",
+        price: 1200000,
+        originalPrice: 1500000,
+        image: "gambar4.jpg",
+        rating: 4.6,
+        description: "Gaya urban cool dengan sentuhan rock & roll. Jaket kulit hitam aviator dengan kerah lebar dipadukan dengan atasan kerah V (V-neck) abu-abu rajut halus dan kaos dalam hitam. Tambahan detail patch bintang di jaket dan rantai celana memberikan karakter yang kuat. Celana panjang hitam longgar dan sepatu boots hitam tebal menciptakan siluet yang gelap dan misterius.",
+        material: "Cotton Twill",
+        weight: "400gr",
+        availability: "In Stock",
+        warranty: "2 Tahun",
+        reviews: [
+          { author: "Jono Haryo", rating: 5, text: "Keren banget jaketnya!" }
+        ]
+      },
+      {
+        id: 5,
+        name: "Autumn Breeze",
+        category: "Oneset",
+        price: 950000,
+        originalPrice: 1100000,
+        image: "gambar5.jpg",
+        rating: 4.4,
+        description: "Gaya preppy yang modern dan santai. Rompi rajut (knit vest) warna krem muda dipadukan dengan kemeja longgar warna krem senada di dalamnya. Celana panjang coklat tua memberikan kontras warna bumi yang hangat. Headphone hitam besar di tangan menambah kesan muda, kreatif, dan fokus. Tampilan ini sangat nyaman untuk belajar atau bekerja di kafe.",
+        material: "Cotton Canvas",
+        weight: "380gr",
+        availability: "In Stock",
+        warranty: "2 Tahun",
+        reviews: [
+          { author: "Mega Sari", rating: 4, text: "Bagus dan nyaman" }
+        ]
+      },
+      {
+        id: 6,
+        name: "Grounded Neutrals",
+        category: "Oneset",
+        price: 885000,
+        originalPrice: 1050000,
+        image: "gambar6.jpg",
+        rating: 4.2,
+        description: "Tampilan yang berfokus pada pakaian berani (statement piece). Jaket kulit coklat mengkilap yang puffy memberikan volume dan kilau yang menarik perhatian. Dipadukan dengan celana denim wide-leg longgar bergaya retro. Tampilan ini minimalis dalam detail lain, membiarkan jaket dan celana menjadi bintang utamanya.",
+        material: "100% Cotton",
+        weight: "240gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: []
+      },
+      {
+        id: 7,
+        name: "Soft Street",
+        category: "Oneset",
+        price: 780000,
+        originalPrice: 950000,
+        image: "gambar7.jpg",
+        rating: 4.8,
+        description: "Perpaduan gaya formal dan santai yang berani. Jaket kulit hitam dengan potongan boxy dan kancing kemeja di luar kemeja biru muda dan kaos putih di dalam. Celana cargo oversized warna krem tua memberikan nuansa workwear yang santai. Tampilan ini effortless cool dengan permainan tekstur yang kaya.",
+        material: "Cotton Blend",
+        weight: "320gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "Lina Puspita", rating: 5, text: "Favorite saya!" }
+        ]
+      },
+      {
+        id: 8,
+        name: "Urban Ease",
+        category: "Oneset",
+        price: 1800000,
+        originalPrice: 2200000,
+        image: "gambar8.jpg",
+        rating: 4.5,
+        description: "Gaya urban yang bersih dan easy-going. Jaket kulit hitam bomber dipadukan dengan kemeja putih bersih di dalamnya. Celana denim faded blue wide-leg memberikan kesan retro yang santai. Tas tote bag besar di satu tangan dan kopi di tangan lainnya menciptakan citra urbanite yang sibuk tapi tetap modis.",
+        material: "Cotton Twill",
+        weight: "420gr",
+        availability: "In Stock",
+        warranty: "2 Tahun",
+        reviews: []
+      },
+      {
+        id: 9,
+        name: "Muted Timber",
+        category: "Oneset",
+        price: 500000,
+        originalPrice: 600000,
+        image: "gambar9.jpg",
+        rating: 4.6,
+        description: "Tampilan retro modern yang nyaman. Zip-up sweater rajut dengan motif garis-garis horizontal warna marun, putih, dan hijau dipadukan dengan celana bahan longgar warna coklat keabu-abuan. Sepatu loafers hitam yang elegan memberikan sentuhan akhir yang rapi dan preppy pada tampilan yang santai ini.",
+        material: "Leather & Canvas",
+        weight: "600gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "Rendra Wijaya", rating: 5, text: "Sepatu yang cocok untuk casual" }
+        ]
+      },
+      {
+        id: 10,
+        name: "Everyday Frame",
+        category: "Oneset",
+        price: 450000,
+        originalPrice: 550000,
+        image: "gambar10.jpg",
+        rating: 4.7,
+        description: "Gaya minimalis dengan kontras warna yang tajam. Jaket kulit hitam bomber dipadukan dengan kemeja biru muda terang. Celana panjang longgar warna abu-abu memberikan kesan rapi. Tas tote bag putih besar dengan tulisan hitam dan sepatu sneakers putih memberikan kontras yang cerah dan modern pada keseluruhan tampilan.",
+        material: "Canvas & Rubber",
+        weight: "580gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "Citra Dewi", rating: 5, text: "Nyaman banget!" }
+        ]
+      },
+       {
+        id: 11,
+        name: "Breeze Oversized Shirt",
+        category: "Kemeja",
+        price: 150000,
+        originalPrice: 180000,
+        image: "gambar11.jpg",
+        rating: 4.7,
+        description: "Kemeja putih oversized dengan potongan longgar yang memberikan kesan santai namun tetap rapi. Dilengkapi dengan kerah klasik, saku depan, dan lengan panjang yang bisa digulung untuk tampilan lebih kasual. Cocok dipadukan dengan celana bahan atau chino untuk gaya sehari-hari yang effortless dan bersih. Ideal digunakan untuk hangout, ke kafe, atau aktivitas semi-formal di cuaca hangat.",
+        material: "cotton-linen blend",
+        weight: "185gr",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "Rayhan Dhafa", rating: 5, text: "Nyaman banget!" }
+        ]
+      },
+      {
+        id: 12,
+        name: "Urban Edge Zip Jacket",
+        category: "Jaket",
+        price: 350000,
+        originalPrice: 480000,
+        image: "gambar12.jpg",
+        rating: 4.7,
+        description: "Jaket hitam dengan desain minimalis dan siluet modern yang memberikan kesan tegas namun tetap santai. Dilengkapi dengan kerah yang terstruktur, resleting depan, dan detail kantong yang simpel. Cocok dipadukan dengan kaos basic untuk tampilan kasual hingga smart-casual, ideal digunakan untuk aktivitas sehari-hari di lingkungan urban.",
+        material: "Premium polyester blend / lightweight faux leather",
+        weight: "±600–800 gram (tergantung ukuran)",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "reno kopi", rating: 5, text: "Gua kelihatan ganteng banget cuk!" }
+        ]
+      },
+      {
+        id: 13,
+        name: "Classic Black Tassel Loafers",
+        category: "Shoes",
+        price: 150000,
+        originalPrice: 180000,
+        image: "gambar13.jpg",
+        rating: 4.7,
+        description: "Sepatu loafers dengan desain klasik dan elegan, dilengkapi detail tassel di bagian atas yang memberikan kesan stylish dan timeless. Cocok digunakan untuk acara formal maupun casual, memberikan kenyamanan sekaligus meningkatkan penampilan agar terlihat lebih rapi dan berkelas.",
+        material: "Leather & Canvas",
+        weight: "± 900 gram (per pair)",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "reno kopi", rating: 5, text: "Gua kelihatan ganteng banget cuk!" }
+        ]
+      },
+      {
+        id: 14,
+        name: "Wide Leg Washed Denim Pants",
+        category: "Celana",
+        price: 400000,
+        originalPrice: 580000,
+        image: "gambar14.jpg",
+        rating: 4.7,
+        description: "Celana denim dengan potongan wide leg yang memberikan tampilan relaxed dan modern. Memiliki efek washed yang menciptakan kesan vintage dan effortless. Cocok dipadukan dengan berbagai outfit, dari streetwear hingga casual minimal look.",
+        material: "Washed Denim Cotton",
+        weight: "± 650 gram",
+        availability: "In Stock",
+        warranty: "1 Tahun",
+        reviews: [
+          { author: "reno kopi", rating: 5, text: "Gua kelihatan ganteng banget cuk!" }
+        ]
+      }
+      
+      
+    ];
+
+    function getProductIdFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return parseInt(params.get('id')) || 1;
+    }
+
+    function loadProduct() {
+      const productId = getProductIdFromURL();
+      const product = products.find(p => p.id === productId);
+
+      if (!product) {
+        document.body.innerHTML = '<p style="text-align: center; margin-top: 50px;">Produk tidak ditemukan</p>';
+        return;
+      }
+
+      // Set product info
+      document.getElementById('productName').textContent = product.name;
+      document.getElementById('category').textContent = product.category;
+      document.getElementById('mainImage').src = product.image;
+      document.getElementById('description').textContent = product.description;
+      document.getElementById('material').textContent = product.material;
+      document.getElementById('weight').textContent = product.weight;
+      document.getElementById('availability').textContent = product.availability;
+      document.getElementById('warranty').textContent = product.warranty;
+      document.getElementById('breadcrumbProduct').textContent = product.name;
+
+      // Set prices
+      const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+      document.getElementById('originalPrice').textContent = `Rp ${product.originalPrice.toLocaleString('id-ID')}`;
+      document.getElementById('currentPrice').textContent = `Rp ${product.price.toLocaleString('id-ID')}`;
+      document.getElementById('discountBadge').textContent = `-${discount}%`;
+
+      // Set rating
+      const reviewCount = product.reviews.length + Math.floor(Math.random() * 50);
+      document.getElementById('ratingStars').textContent = `★ ${product.rating}`;
+      document.getElementById('reviewCount').textContent = reviewCount;
+
+      // Load thumbnails
+      const thumbnailsContainer = document.getElementById('thumbnails');
+      for (let i = 0; i < 4; i++) {
+        const img = document.createElement('img');
+        img.src = product.image;
+        img.alt = product.name;
+        img.className = 'thumbnail' + (i === 0 ? ' selected' : '');
+        img.onclick = () => {
+          document.getElementById('mainImage').src = product.image;
+          document.querySelectorAll('.thumbnail').forEach(t => t.style.borderColor = 'transparent');
+          img.style.borderColor = '#667eea';
+        };
+        if (i === 0) img.style.borderColor = '#667eea';
+        thumbnailsContainer.appendChild(img);
+      }
+
+      // Load reviews
+      const reviewsList = document.getElementById('reviewsList');
+      if (product.reviews.length > 0) {
+        reviewsList.innerHTML = product.reviews.map(review => `
+          <div class="review-item">
+            <div class="review-header">
+              <div class="review-author">${review.author}</div>
+              <div class="review-date">2 hari yang lalu</div>
+            </div>
+            <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</div>
+            <div class="review-text">${review.text}</div>
+          </div>
+        `).join('');
+      } else {
+        reviewsList.innerHTML = '<p>Belum ada ulasan untuk produk ini.</p>';
+      }
+    }
+
+    function selectSize(button) {
+      document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('selected'));
+      button.classList.add('selected');
+    }
+
+    function increaseQuantity() {
+      const input = document.getElementById('quantity');
+      input.value = parseInt(input.value) + 1;
+    }
+
+    function decreaseQuantity() {
+      const input = document.getElementById('quantity');
+      if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+      }
+    }
+
+    function addToCart() {
+      const quantity = document.getElementById('quantity').value;
+      alert(`Produk ditambahkan ke keranjang! (Jumlah: ${quantity})`);
+    }
+
+    function addToWishlist() {
+      alert('Produk ditambahkan ke wishlist!');
+    }
+
+    // Load product on page load
+    loadProduct();
+  </script>
+</body>
+</html>
